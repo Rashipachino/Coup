@@ -1,49 +1,54 @@
 #include "Player.hpp"
+const int ten = 10;
+const int one = 1;
+const int seven = 7;
 
 void Player::income(){
+    if(this->game->players().size() == one){
+        throw invalid_argument("too few players");
+    }
     if(this->game->turn() != this->name){
         throw invalid_argument("Player is out of turn");
     }
-    if(coin_count == 10){
+    if(coin_count >= ten){
         throw invalid_argument("Player must coup");
     }
-    else{  
-        coin_count++;
-        this->last_move = "Income";
-        this->game->update_turn();
-    }
+    coin_count++;
+    this->last_move = "Income";
+    this->game->update_turn();
 }
 void Player::foreign_aid(){
+    if(this->game->players().size() == one){
+        throw invalid_argument("too few players");
+    }
     if(this->game->turn() != this->name){
         throw invalid_argument("Player is out of turn");
     }
-    if(coin_count == 10){
+    if(coin_count >= ten){
         throw invalid_argument("Player must coup");
     }
-    else{
-        coin_count+=2;
-        this->last_move = "Foreign_aid";
-        this->game->update_turn(); 
-    }
-   
+    coin_count+=2;
+    this->last_move = "Foreign_aid";
+    this->game->update_turn();  
 }
 void Player::coup(Player &p){
+    if(this->game->players().size() == one){
+        throw invalid_argument("too few players");
+    }
     if(this->game->turn() != this->name){
         throw invalid_argument("Player is out of turn");
     }
-    if(coin_count < 7){
+    if(coin_count < seven){
         throw invalid_argument("Not enough coins to coup");
     }
     if(p.get_game()->get_status(p.get_name()) == "Dead"){
         throw invalid_argument("Player to coup is already dead");
     }
-    else{
-       p.get_game()->set_status(p.get_name(), "Dead"); //kill character
-        this->coin_count -= 7;
-        this->last_move = "Coup";
-        this->game->update_turn();
-        this->history = &p;
-    }
+    p.get_game()->set_status(p.get_name(), "Dead"); //kill character
+    this->coin_count -= seven;
+    this->last_move = "Coup";
+    this->game->update_turn();
+    this->history = &p;
 }
 int Player::coins() const{
     return coin_count;
@@ -66,8 +71,8 @@ string Player::get_name(){
 string Player::get_last_move(){
     return last_move;
 }
-void Player::set_last_move(string move){
-    this->last_move = move;
+void Player::set_last_move(string bla){
+    this->last_move = std::move(bla);
 }
 Player* Player::get_history(){
     return this->history;

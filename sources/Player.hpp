@@ -15,11 +15,15 @@ using namespace std;
            Player* history;
         public:
             Player(Game &game, string name){
+                if(game.get_flag() == 1){
+                    throw invalid_argument("Game is already in progress");
+                }
                 this->name = name;
                 this->coin_count = 0;
                 this->game = &game;
                 this->game->set_players(name);
                 this->game->set_status(name, "Alive");
+                this->last_move = "None";
             }
             void income();
             void foreign_aid();
@@ -30,7 +34,7 @@ using namespace std;
             Game* get_game();
             string get_name();
             string get_last_move();
-            void set_last_move(string move);
+            void set_last_move(string bla);
             Player* get_history();
             void set_history(Player* new_history);
     };
